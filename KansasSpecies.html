@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MoMaP</title>
+  <link rel="icon" type="image/x-icon" href="JerbFavicon.png">
+
+  <meta charset="UTF-8">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <!--Libraries-->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+  integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+  crossorigin=""></script>
+  <script src="JS/markercluster-src.js"></script>
+ <script src="JS/noUiSlider/nouislider.js"></script>
+  <script src="Libraries/Dropdown/multiselect_dropdown_with_checkbox_jquery/js/multiselect/jquery.multiselect.js"></script>
+  <!-- <script src="Libraries/Slide Menu/Leaflet.SlideMenu-0.4.1/src/L.Control.SlideMenu.js"></script>
+  <script src="Libraries/Legend/Leaflet.Legend-1.0.0/src/leaflet.legend.js"></script> ---> 
+  <script src="Libraries/wNumb/wnumb-1.2.0/wNumb.js"></script> 
+  <script src="JS/leaflet.markercluster.freezable.js"></script>
+  
+
+  
+
+  <!--Stylesheets-->
+  <link rel="stylesheet" href="MongoliaStyles.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+  crossorigin=""/> 
+  <link type="text/css" href="Libraries/Leaflet.markercluster/Markercluster.leaflet/dist/MarkerCluster.css" rel="stylesheet"/>
+  <link type="text/css" href="Libraries/Leaflet.markercluster/Markercluster.leaflet/dist/MarkerCluster.Default.css" rel="stylesheet" />
+  <link rel="stylesheet" href="JS/noUiSlider/nouislider.css"/>
+  <link rel="stylesheet" href="Libraries/Dropdown/multiselect_dropdown_with_checkbox_jquery/js/multiselect/jquery.multiselect.css"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="Libraries/Slide Menu/Leaflet.SlideMenu-0.4.1/src/L.Control.SlideMenu.css"/>
+  <link rel="stylesheet" href="Libraries/Legend/Leaflet.Legend-1.0.0/src/leaflet.legend.css"/>
+
+</head>
+<body>
+  <div id="Titles">
+    <img src="MoMapLogo2.png">
+  </div>
+  <!--About Info-->
+  <div id="About">
+    <button id="aboutmap">About This Map</button>
+  </div>
+
+ 
+
+
+
+  <!-- Modal -->
+  <div class="modal-background" id="modal-background">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>About MoMaP</h3>
+        <p  id="aboutContent">MoMap (Mongolian Mammals and Parasites) is intended to display the Museum of Southwestern Biology's efforts of holistic mammal and parasite collection in Mongolia. 
+          Funded by the National Science Foundation, the Steppe Parasite Networks Project focuses on the mammals and parasites of Central Asia. 
+          This project would not be possible without the efforts of multiple principal investigators, students, and volunteers throughout the United States and especially, Mongolia.
+          <br><br>
+          The Arctos database is the source of the specimen information displayed on this map. 
+          With the goal of accessibility, this webpage can be displayed in English and Mongolian.
+          <br><br>
+          This map can display mammal species, their ranges, and their associated parasites. 
+          The available collections will range from 1997 to the most recent trip to Mongolia in 2023.
+        </p>
+      <h3>Creators</h3>
+        <p><strong>Creator: </strong><a class="link" href="https://litsawoo.github.io/" target="_blank">Litsa Wooten</a> (wootenl@unm.edu) 
+          <br>
+          <strong>Initial Advisor: </strong><a class="link" href="https://www.lipingyang.org/" target="_blank">Liping Yang</a> (lipingyang@unm.edu)
+        </p>
+
+      <h3>Acknowledgements</h3>
+        <p> <a class="link" href="http://www.msb.unm.edu/" target="_blank">The Museum of Southwestern Biology</a>
+            <br>
+            <a class="link" href="https://arctos.database.museum/search.cfm" target="_blank">Arctos Database</a>
+            <br>
+            <a class="link" href="https://eve-row.github.io/MyWebApp/index.html" target="_blank">Eve Rowland and Team's Interactive Map</a>
+            <br>
+            <a class="link" href="https://maps.usgs.gov/gap-species/" target="_blank">USGS Species Viewer</a>
+            <br>
+            <a class="link" href="https://refreshless.com/nouislider/" target="_blank">Year Slider</a>
+            <br>
+            <a class="link" href="https://www.codexworld.com/multi-select-dropdown-list-with-checkbox-jquery/" target="_blank">Multiselect Dropdown Menu</a>
+            <br>
+            <a class="link" href="http://leaflet-extras.github.io/leaflet-providers/preview/" target="_blank">Map Base Layers</a>
+            <br>
+            <a class="link" href="https://dannyibanez.myportfolio.com/work" target="_blank">Danny Ibañez- MoMaP Logo Creator</a>
+        </p>
+      <h3>GitHub Repository</h3>
+        <p>
+          <a class="link" href="https://github.com/LitsaWoo/LitsaWoo.github.io/tree/main/MyWebApp" target="_blank">Code for the map</a>
+        </p>
+    </div>
+  </div>
+
+ 
+
+<!--Search Bar-->
+<div id="searchbar">
+  <button class="button" id="LangButtEng">English</button>
+  
+  <button class="button" lang="mn" id="LangButtMong" onclick="navigateToPage('MongoliaSpeciesLang.html')">Монгол</button>
+  <br>
+  <button class="button" id="toggle" style="
+  background-color: rgb(237, 237, 237);
+  color: black;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  position: relative;
+  left: 25%;
+  margin-top: 5%;
+">Toggle Cluster</button>
+  <h3 class="Titles">Mammal Selector</h3>
+  <p class="instruction">Use the dropdown menu <br>
+    to add species to the map</p>
+  <select name="Species[]" multiple id="Species" id="species">
+    <optgroup label="Ammospermophilus (Antelope Squirrel)">
+      <option value="Ammospermophilus harrisii">Ammospermophilus harrisii</option>
+    </optgroup>
+    <optgroup label="Antilocapra (Pronghorn)">
+        <option value="Antilocapra americana">Antilocapra americana</option>
+    </optgroup>
+    <optgroup label="Antrozous (Pallid Bat)">
+        <option value="Antrozous pallidus">Antrozous pallidus</option>
+    </optgroup>
+    <optgroup label="Bassariscus (Ringtail)">
+        <option value="Bassariscus astutus">Bassariscus astutus</option>
+    </optgroup>
+    <optgroup label="Blarina (Short-tailed Shrew)">
+      <option value="Blarina brevicauda">Blarina brevicauda</option>
+      <option value="Blarina carolinensis">Blarina carolinensis</option>
+      <option value="Blarina hylophaga">Blarina hylophaga</option>
+    </optgroup>
+    <optgroup label="Bos (Bison)">
+        <option value="Bos bison">Bos bison</option>
+    </optgroup>
+   <optgroup label="Canis (Canine)">
+  <option value="Canis latrans">Canis latrans</option>
+  <option value="Canis lupus">Canis lupus</option>
+<optgroup label="Castor (Beaver)">
+  <option value="Castor canadensis">Castor canadensis</option>
+</optgroup>
+<optgroup label="Chaetodipus (Pocket Mouse)">
+  <option value="Chaetodipus hispidus">Chaetodipus hispidus</option>
+</optgroup>
+<optgroup label="Corynorhinus (Big-eared Bat)">
+  <option value="Corynorhinus townsendii">Corynorhinus townsendii</option>
+</optgroup>
+<optgroup label="Cratogeomys (Gopher)">
+  <option value="Cratogeomys castanops">Cratogeomys castanops</option>
+</optgroup>
+<optgroup label="Cryptotis (Small-eared Shrew)">
+  <option value="Cryptotis parva">Cryptotis parva</option>
+</optgroup>
+<optgroup label="Cynomys (Prairie Dog)">
+  <option value="Cynomys ludovicianus">Cynomys ludovicianus</option>
+</optgroup>
+<optgroup label="Dasypus (Armadillo)">
+  <option value="Dasypus novemcinctus">Dasypus novemcinctus</option>
+</optgroup>
+<optgroup label="Didelphis (Opossum)">
+  <option value="Didelphis marsupialis">Didelphis marsupialis</option>
+  <option value="Didelphis virginiana">Didelphis virginiana</option>
+  </optgroup>
+<optgroup label="Dipodomys (Kangaroo Rat)">
+  <option value="Dipodomys ordii">Dipodomys ordii</option>
+</optgroup>
+<optgroup label="Eptesicus (House Bat)">
+  <option value="Eptesicus fuscus">Eptesicus fuscus</option>
+</optgroup>
+<optgroup label="Equus (Horse)">
+  <option value="Equus caballus">Equus caballus</option>
+</optgroup>
+<optgroup label="Erethizon (Porcupine)">
+  <option value="Erethizon dorsatus">Erethizon dorsatus</option>
+</optgroup>
+<optgroup label="Felis (Cat)">
+  <option value="Felis silvestris">Felis silvestris</option>
+</optgroup>
+<optgroup label="Geomys (Pocket Gopher)">
+  <option value="Geomys bursarius">Geomys bursarius</option>
+  <option value="Geomys jugossicularis">Geomys jugossicularis</option>
+  <option value="Geomys lutescens">Geomys lutescens</option>
+  <option value="Geomys personatus">Geomys personatus</option>
+</optgroup>
+<optgroup label="Glaucomys (Flying Squirrel)">
+  <option value="Glaucomys volans">Glaucomys volans</option>
+</optgroup>
+<optgroup label="Ictidomys (Ground Squirrel)">
+  <option value="Ictidomys tridecemlineatus">Ictidomys tridecemlineatus</option>
+</optgroup>
+<optgroup label="Lasionycteris (Silver-haired Bat)">
+  <option value="Lasionycteris noctivagans">Lasionycteris noctivagans</option>
+</optgroup>
+<optgroup label="Lasiurus (Hoary Bat)">
+  <option value="Lasiurus borealis">Lasiurus borealis</option>
+  <option value="Lasiurus cinereus">Lasiurus cinereus</option>
+</optgroup>
+<optgroup label="Lemmiscus (Sagebrush Vole)">
+  <option value="Lemmiscus curtatus">Lemmiscus curtatus</option>
+</optgroup>
+<optgroup label="Lepus (Hares)">
+  <option value="Lepus californicus">Lepus californicus</option>
+  <option value="Lepus townsendii">Lepus townsendii</option>
+</optgroup>
+<optgroup label="Lontra (River Otter)">
+  <option value="Lontra canadensis">Lontra canadensis</option>
+</optgroup>
+<optgroup label="Lynx (Bobcat)">
+  <option value="Lynx rufus">Lynx rufus</option>
+</optgroup>
+<optgroup label="Marmota (Marmot)">
+  <option value="Marmota monax">Marmota monax</option>
+ </optgroup>
+ <optgroup label="Mephitis (Skunk)">
+  <option value="Mephitis mephitis">Mephitis mephitis</option>
+</optgroup>
+<optgroup label="Microtus (Meadow Vole)">
+  <option value="Microtus ochrogaster">Microtus ochrogaster</option>
+  <option value="Microtus pennsylvanicus">Microtus pennsylvanicus</option>
+  <option value="Microtus pinetorum">Microtus pinetorum</option>
+</optgroup>
+<optgroup label="Mus (Mice)">
+  <option value="Mus musculus">Mus musculus</option>
+</optgroup>
+<optgroup label="Mustela (Weasels and Polecats)">
+  <option value="Mustela nigripes">Mustela nigripes</option>
+  <option value="Mustela nivalis">Mustela nivalis</option>
+</optgroup>
+<optgroup label="Myocastor (Nutria)">
+  <option value="Myocastor coypus">Myocastor coypus</option>
+</optgroup>
+<optgroup label="Myotis (Mouse-eared Bat)">
+  <option value="Myotis ciliolabrum">Myotis ciliolabrum</option>
+  <option value="Myotis grisescens">Myotis grisescens</option>
+  <option value="Myotis lucifugus">Myotis lucifugus</option>
+  <option value="Myotis septentrionalis">Myotis septentrionalis</option>
+  <option value="Myotis velifer">Myotis velifer</option>
+  <option value="Myotis yumanensis">Myotis yumanensis</option>
+</optgroup>
+<optgroup label="Neogale (Weasels and Minks)">
+  <option value="Neogale frenata">Neogale frenata</option>
+  <option value="Neogale vison">Neogale vison</option>
+</optgroup>
+<optgroup label="Neotoma (Pack Rat)">
+  <option value="Neotoma floridana">Neotoma floridana</option>
+  <option value="Neotoma micropus">Neotoma micropus</option>
+</optgroup>
+<optgroup label="Nycticeius (Evening Bats)">
+  <option value="Nycticeius humeralis">Nycticeius humeralis</option>
+  </optgroup>
+  <optgroup label="Odocoileus (Deer)">
+    <option value="Odocoileus hemionus">Odocoileus hemionus</option>
+    <option value="Odocoileus virginianus">Odocoileus virginianus</option>
+  </optgroup>
+  <optgroup label="Ondatra (Muskrat)">
+    <option value="Ondatra zibethicus">Ondatra zibethicus</option>
+  </optgroup>
+  <optgroup label="Onychomys (Grasshopper Mouse)">
+    <option value="Onychomys leucogaster">Onychomys leucogaster</option>
+    </optgroup>
+    <optgroup label="Perimyotis (Tricolored Bat)">
+      <option value="Perimyotis subflavus">Perimyotis subflavus</option>
+    </optgroup>
+    <optgroup label="Perognathus (Pocket Mouse)">
+      <option value="Perognathus flavescens">Perognathus flavescens</option>
+      <option value="Perognathus flavus">Perognathus flavus</option>
+    </optgroup>
+    <optgroup label="Peromyscus (Deer Mice)">
+      <option value="Peromyscus attwateri">Peromyscus attwateri</option>
+      <option value="Peromyscus leucopus">Peromyscus leucopus</option>
+      <option value="Peromyscus maniculatus">Peromyscus maniculatus</option>
+    </optgroup>
+    <optgroup label="Poliocitellus (Franklin's Ground Squirrel)">
+      <option value="Poliocitellus franklinii">Poliocitellus franklinii</option>
+    </optgroup>
+    <optgroup label="Procyon (Raccoon)">
+      <option value="Procyon lotor">Procyon lotor</option>
+    </optgroup>
+    <optgroup label="Rattus (Rat)">
+      <option value="Rattus norvegicus">Rattus norvegicus</option>
+    </optgroup>
+    <optgroup label="Reithrodontomys (Harvest Mice)">
+      <option value="Reithrodontomys fulvescens">Reithrodontomys fulvescens</option>
+      <option value="Reithrodontomys megalotis">Reithrodontomys megalotis</option>
+      <option value="Reithrodontomys montanus">Reithrodontomys montanus</option>
+    </optgroup>
+    <optgroup label="Scalopus (Eastern Mole)">
+      <option value="Scalopus aquaticus">Scalopus aquaticus</option>
+    </optgroup>
+    <optgroup label="Sciurus (Tree Squirrel)">
+      <option value="Sciurus carolinensis">Sciurus carolinensis</option>
+      <option value="Sciurus niger">Sciurus niger</option>
+    </optgroup>
+    <optgroup label="Sigmodon (Cotton Rat)">
+      <option value="Sigmodon hispidus">Sigmodon hispidus</option>
+    </optgroup>
+    <optgroup label="Sorex (Long-Tailed Shrews)">
+      <option value="Sorex cinereus">Sorex cinereus</option>
+      <option value="Sorex haydeni">Sorex haydeni</option>
+      </optgroup>
+    <optgroup label="Spilogale (Spotted Skunk)">
+      <option value="Spilogale interrupta">Spilogale interrupta</option>
+      <option value="Spilogale putorius">Spilogale putorius</option>
+    </optgroup>
+    <optgroup label="Sylvilagus (Cottontail Rabbit)">
+      <option value="Sylvilagus aquaticus">Sylvilagus aquaticus</option>
+      <option value="Sylvilagus audubonii">Sylvilagus audubonii</option>
+      <option value="Sylvilagus floridanus">Sylvilagus floridanus</option>
+    </optgroup>
+    <optgroup label="Synaptomys (Bog Lemming)">
+      <option value="Synaptomys cooperi">Synaptomys cooperi</option>
+    </optgroup>
+    <optgroup label="Tadarida (Free-tailed Bats)">
+      <option value="Tadarida brasiliensis">Tadarida brasiliensis</option>
+    </optgroup>
+    <optgroup label="Tamias (Chipmunk)">
+      <option value="Tamias striatus">Tamias striatus</option>
+    </optgroup>
+    <optgroup label="Taxidea (Badger)">
+      <option value="Taxidea taxus">Taxidea taxus</option>
+    </optgroup>
+    <optgroup label="Vulpes (Foxes)">
+      <option value="Vulpes velox">Vulpes velox</option>
+      <option value="Vulpes vulpes">Vulpes vulpes</option>
+    </optgroup>
+    <optgroup label="Xerospermophilus (Spotted Ground Squirrel)">
+      <option value="Xerospermophilus spilosoma">Xerospermophilus spilosoma</option>
+    </optgroup>
+    <optgroup label="Zapus (Jumping Mouse)">
+      <option value="Zapus hudsonius">Zapus hudsonius</option>
+    </optgroup>
+
+</select>
+<br>
+<h3 class="Titles">Mammal Range Maps</h3>
+<p class="instruction">Use the dropdown menu to add <br>
+  a species range to the map</p>
+  <select name="Range[]" multiple id="range" id="range">
+    <optgroup label="Alexandromys (Voles)">
+      <option value="Alexandromys fortis">Alexandromys fortis</option>
+      <option value="Alexandromys limnophilus">Alexandromys limnophilus</option>
+      <option value="Alexandromys maximowiczii">Alexandromys maximowiczii</option>
+      <option value="Alexandromys mongolicus">Alexandromys mongolicus</option>
+      <option value="Alexandromys oeconomus">Alexandromys oeconomus</option>
+    </optgroup>
+    <optgroup label="Allocricetulus (Hamsters)">
+        <option value="Allocricetulus curtatus">Allocricetulus curtatus</option>
+    </optgroup>
+    <optgroup label="Alticola (Voles)">
+        <option value="Alticola barakshin">Alticola barakshin</option>
+        <option value="Alticola semicanus">Alticola semicanus</option>
+        <option value="Alticola strelzowi">Alticola strelzowi</option>
+        <option value="Alticola tuvinicus">Alticola tuvinicus</option>
+    </optgroup>
+    <optgroup label="Apodemus (Field Mice)">
+        <option value="Apodemus agrarius">Apodemus agrarius</option>
+        <option value="Apodemus peninsulae">Apodemus peninsulae</option>
+        <option value="Apodemus uralensis">Apodemus uralensis</option>
+    </optgroup>
+    <optgroup label="Camelus (Camels)">
+      <option value="Camelus bactrianus">Camelus bactrianus</option>
+  </optgroup>
+<optgroup label="Cardiocranius (Pygmy Jerboa)">
+  <option value="Cardiocranius paradoxus">Cardiocranius paradoxus</option>
+</optgroup>
+<optgroup label="Cervus (Elk)">
+  <option value="Cervus canadensis">Cervus canadensis</option>
+</optgroup>
+<optgroup label="Clethrionomys (Red-Backed Voles)">
+  <option value="Clethrionomys rutilus">Clethrionomys rutilus</option>
+</optgroup>
+<optgroup label="Cnephaeus (Serotine Bats)">
+  <option value="Cnephaeus gobiensis">Cnephaeus gobiensis</option>
+  <option value="Cnephaeus nilssonii">Cnephaeus nilssonii</option>
+  <option value="Cnephaeus serotinus">Cnephaeus serotinus</option>
+</optgroup>
+<optgroup label="Craseomys (Red-Backed Voles)">
+  <option value="Craseomys rufocanus">Craseomys rufocanus</option>
+</optgroup>
+<optgroup label="Cricetulus (Hamsters)">
+  <option value="Cricetulus barabensis">Cricetulus barabensis</option>
+  <option value="Cricetulus longicaudatus">Cricetulus longicaudatus</option>
+ </optgroup>
+<optgroup label="Crocidura (White-Toothed Shrews)">
+  <option value="Crocidura shantungensis">Crocidura shantungensis</option>
+  <option value="Crocidura suaveolens">Crocidura suaveolens</option>
+</optgroup>
+<optgroup label="Dipus (Three-Toed Jerboas)">
+  <option value="Dipus sagitta">Dipus sagitta</option>
+</optgroup>
+<optgroup label="Dryomys (Forest Dormice)">
+  <option value="Dryomys nitedula">Dryomys nitedula</option>
+</optgroup>
+<optgroup label="Ellobius (Mole Voles)">
+  <option value="Ellobius tancrei">Ellobius tancrei</option>
+</optgroup>
+<optgroup label="Eolagurus (Lemmings)">
+  <option value="Eolagurus luteus">Eolagurus luteus</option>
+</optgroup>
+<optgroup label="Equus (Horses and Asses)">
+  <option value="Equus hemionus">Equus hemionus</option>
+</optgroup>
+<optgroup label="Euchoreutes (Long-Eared Jerboas)">
+  <option value="Euchoreutes naso">Euchoreutes naso</option>
+</optgroup>
+<optgroup label="Eutamias (Siberian Chipmunks)">
+  <option value="Eutamias sibiricus">Eutamias sibiricus</option>
+</optgroup>
+<optgroup label="Gazella (Gazelles)">
+  <option value="Gazella subgutturosa">Gazella subgutturosa</option>
+</optgroup>
+<optgroup label="Hemiechinus (Long-Eared Hedgehogs)">
+  <option value="Hemiechinus auritus">Hemiechinus auritus</option>
+</optgroup>
+<optgroup label="Hypsugo (Pipistrelle Bats)">
+  <option value="Hypsugo alaschanicus">Hypsugo alaschanicus</option>
+</optgroup>
+<optgroup label="Lasiopodomys (Voles)">
+  <option value="Lasiopodomys brandtii">Lasiopodomys brandtii</option>
+  <option value="Lasiopodomys mandarinus">Lasiopodomys mandarinus</option>
+</optgroup>
+<optgroup label="Lepus (Hares)">
+  <option value="Lepus timidus">Lepus timidus</option>
+  <option value="Lepus tolai">Lepus tolai</option>
+</optgroup>
+<optgroup label="Marmota (Marmots)">
+  <option value="Marmota baibacina">Marmota baibacina</option>
+  <option value="Marmota sibirica">Marmota sibirica</option>
+</optgroup>
+<optgroup label="Martes (Martens)">
+  <option value="Martes foina">Martes foina</option>
+ </optgroup>
+ <optgroup label="Meles (Badgers)">
+  <option value="Meles leucurus">Meles leucurus</option>
+  <option value="Meles meles">Meles meles</option>
+</optgroup>
+<optgroup label="Meriones (Gerbils)">
+  <option value="Meriones meridianus">Meriones meridianus</option>
+  <option value="Meriones tamariscinus">Meriones tamariscinus</option>
+  <option value="Meriones unguiculatus">Meriones unguiculatus</option>
+</optgroup>
+<optgroup label="Microtus (Voles)">
+  <option value="Microtus arvalis">Microtus arvalis</option>
+</optgroup>
+<optgroup label="Mus (Mice)">
+  <option value="Mus musculus">Mus musculus</option>
+</optgroup>
+<optgroup label="Mustela (Weasels and Polecats)">
+  <option value="Mustela altaica">Mustela altaica</option>
+  <option value="Mustela erminea">Mustela erminea</option>
+  <option value="Mustela nivalis">Mustela nivalis</option>
+</optgroup>
+<optgroup label="Myopus (Wood Lemmings)">
+  <option value="Myopus schisticolor">Myopus schisticolor</option>
+</optgroup>
+<optgroup label="Myospalax (Zokors)">
+  <option value="Myospalax aspalax">Myospalax aspalax</option>
+  <option value="Myospalax psilurus">Myospalax psilurus</option>
+</optgroup>
+<optgroup label="Myotis (Mouse-Eared Bats)">
+  <option value="Myotis brandtii">Myotis brandtii</option>
+  <option value="Myotis davidii">Myotis davidii</option>
+  <option value="Myotis petax">Myotis petax</option>
+  <option value="Myotis sibiricus">Myotis sibiricus</option>
+  </optgroup>
+  <optgroup label="Neomys (Water Shrews)">
+    <option value="Neomys fodiens">Neomys fodiens</option>
+  </optgroup>
+  <optgroup label="Nothocricetulus (Dwarf Hamsters)">
+    <option value="Nothocricetulus migratorius">Nothocricetulus migratorius</option>
+  </optgroup>
+  <optgroup label="Ochotona (Pikas)">
+    <option value="Ochotona alpina">Ochotona alpina</option>
+    <option value="Ochotona dauurica">Ochotona dauurica</option>
+    <option value="Ochotona hoffmanni">Ochotona hoffmanni</option>
+    <option value="Ochotona hyperborea">Ochotona hyperborea</option>
+    <option value="Ochotona pallasii">Ochotona pallasii</option>
+    </optgroup>
+    <optgroup label="Ondatra (Muskrats)">
+      <option value="Ondatra zibethicus">Ondatra zibethicus</option>
+    </optgroup>
+    <optgroup label="Orientallactaga (Jerboas)">
+      <option value="Orientallactaga balikunica">Orientallactaga balikunica</option>
+      <option value="Orientallactaga bullata">Orientallactaga bullata</option>
+      <option value="Orientallactaga sibirica">Orientallactaga sibirica</option>
+    </optgroup>
+    <optgroup label="Ovis (Sheep)">
+      <option value="Ovis ammon">Ovis ammon</option>
+    </optgroup>
+    <optgroup label="Phodopus (Dwarf Hamsters)">
+      <option value="Phodopus campbelli">Phodopus campbelli</option>
+      <option value="Phodopus roborovskii">Phodopus roborovskii</option>
+    </optgroup>
+    <optgroup label="Plecotus (Long-Eared Bats)">
+      <option value="Plecotus kozlovi">Plecotus kozlovi</option>
+      <option value="Plecotus ognevi">Plecotus ognevi</option>
+    </optgroup>
+    <optgroup label="Pygeretmus (Jerboas)">
+      <option value="Pygeretmus pumilio">Pygeretmus pumilio</option>
+    </optgroup>
+    <optgroup label="Rattus (Rats)">
+      <option value="Rattus norvegicus">Rattus norvegicus</option>
+    </optgroup>
+    <optgroup label="Rhombomys (Great Gerbils)">
+      <option value="Rhombomys opimus">Rhombomys opimus</option>
+    </optgroup>
+    <optgroup label="Salpingotus (Jerboas)">
+      <option value="Salpingotus crassicauda">Salpingotus crassicauda</option>
+      <option value="Salpingotus kozlovi">Salpingotus kozlovi</option>
+    </optgroup>
+    <optgroup label="Sciurus (Tree Squirrels)">
+      <option value="Sciurus vulgaris">Sciurus vulgaris</option>
+    </optgroup>
+    <optgroup label="Sorex (Long-Tailed Shrews)">
+      <option value="Sorex araneus">Sorex araneus</option>
+      <option value="Sorex caecutiens">Sorex caecutiens</option>
+      <option value="Sorex daphaenodon">Sorex daphaenodon</option>
+      <option value="Sorex isodon">Sorex isodon</option>
+      <option value="Sorex minutissimus">Sorex minutissimus</option>
+      <option value="Sorex roboratus">Sorex roboratus</option>
+      <option value="Sorex tundrensis">Sorex tundrensis</option>
+      </optgroup>
+    <optgroup label="Spermophilus (Ground Squirrels)">
+      <option value="Spermophilus alashanicus">Spermophilus alashanicus</option>
+      <option value="Spermophilus dauricus">Spermophilus dauricus</option>
+      <option value="Spermophilus pallidicauda">Spermophilus pallidicauda</option>
+    </optgroup>
+    <optgroup label="Stenocranius (Voles)">
+      <option value="Stenocranius gregalis">Stenocranius gregalis</option>
+    </optgroup>
+    <optgroup label="Stylodipus (Jerboas)">
+      <option value="Stylodipus andrewsi">Stylodipus andrewsi</option>
+      <option value="Stylodipus sungorus">Stylodipus sungorus</option>
+    </optgroup>
+    <optgroup label="Urocitellus (Ground Squirrels)">
+      <option value="Urocitellus undulatus">Urocitellus undulatus</option>
+    </optgroup>
+    <optgroup label="Vespertilio (Frosted Bats)">
+      <option value="Vespertilio murinus">Vespertilio murinus</option>
+    </optgroup>
+    <optgroup label="Vulpes (Foxes)">
+      <option value="Vulpes corsac">Vulpes corsac</option>
+      <option value="Vulpes vulpes">Vulpes vulpes</option>
+    </optgroup>
+  </select>
+
+ <!-- <button class="button" id="Include">Include Parasites</button>
+
+  <button class="button" id="Exclude">Exclude Parasites</button>
+  -->
+
+  <br>
+<h3 class="Titles">Ectoparasite Selector</h3>
+<p class="instruction">Use the dropdown menu to add <br>
+  a ectoparasites to the map</p>
+  <select name="Parasites[]" multiple id="Ectoparasites" id="Ectoparasites">
+    <optgroup label="Ectoparasites">
+      <option value="Yes">Unidentified</option>
+      <option value="Arthropoda">Arthropoda</option>
+        <optgroup label="Flies">
+          <option value="Diptera">Diptera</option>
+        </optgroup>
+        <optgroup label="Ticks and Mites">
+          <option value="Acari">Acari</option>
+          <option value="Ixodida">Ixodida</option>
+        </optgroup>
+        <optgroup label="Fleas">
+          <option value="Siphonaptera">Siphonaptera</option>
+        </optgroup>
+        <optgroup label="Lice">
+          <option value="Psocodea">Unidentified Lice</option>
+          <option value="Phthiraptera">Phthiraptera</option>
+        </optgroup>
+    </optgroup>
+    </select>
+    <br>
+    <h3 class="Titles">Endoparasite Selector</h3>
+<p class="instruction">Use the dropdown menu to add <br>
+  a endoparasites to the map</p>
+  <select name="Parasites[]" multiple id="Endoparasites" id="Endoparasites">
+    <optgroup label="Endoparasites">
+          <option value="Yes">Unidentified</option>
+        </optgroup>
+    <optgroup label="Nematodes">
+          <option value="Rhabditida">Rhabditida</option>
+          <option value="Strongylida">Strongylida</option>
+          <option value="Oxyurida">Oxyurida</option>
+        <optgroup label="Cestodes">
+          <option value="Cyclophyllidea">Cyclophyllidea</option>
+        </optgroup>
+    </optgroup>
+    </select>
+    <br>
+    <button class="button" id="download" style="
+  background-color: rgb(237, 237, 237);
+  color: black;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  position: relative;
+  left: 25%;
+  margin-top: 5%;
+">Download Data</button>
+  </div>
+
+  
+   <!--Year Slider-->
+<div id="slider"></div>
+
+
+
+<!--Legend-->
+<div id="legend" >
+  <h2 id="words">Legend</h2>
+<div id="table">
+  <table>
+    <tr>
+ <td>
+  <span id="Bovidae"></span>
+  <em>Bovidae</em>
+</td> 
+<td>
+  <span id="Camelidae"></span>
+  <em>Camelidae</em>
+</td>
+<td>
+<div id="Canidae"></div>
+  <em>Canidae</em>
+</td>
+<td>
+  <div id="Cervidae"></div>
+  <em>Cervidae</em>
+</td>
+<td>
+  <div id="Cricetidae"></div>
+  <em>Cricetidae</em>
+</td>
+<td>
+  <div id="Dipodidae"></div>
+  <em>Dipodidae</em>
+</td>
+<td>
+  <div id="Equidae"></div>
+  <em>Equidae</em>
+</td>
+<td>
+  <div id="Erinaceidae"></div>
+  <em>Erinaceidae</em>
+</td>
+</tr>
+<tr>
+<td>
+  <div id="Gliridae"></div>
+  <em>Gliridae</em>
+</td>
+<td>
+  <div id="Leporidae"></div>
+  <em>Leporidae</em>
+</td>
+<td>
+  <div id="Muridae"></div>
+  <em>Muridae</em>
+</td>
+<td>
+  <div id="Mustelidae"></div>
+  <em>Mustelidae</em>
+</td>
+<td>
+  <div id="Ochotonidae"></div>
+  <em>Ochotonidae</em>
+</td>
+<td>
+  <div id="Sciuridae"></div>
+  <em>Sciuridae</em>
+</td>
+<td>
+  <div id="Soricidae"></div>
+  <em>Soricidae</em>
+</td>
+<td>
+  <div id="Spalacidae"></div>
+  <em>Spalacidae</em>
+</td>
+<tr>
+<td>
+  <div id="Vespertilionidae"></div>
+  <em>Vespertilionidae</em>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+  <!--Map-->
+    <div id="mapId"></div>
+
+
+
+
+</body>
+
+
+<script src="KansasScript.js"></script>
+
+
+</html>

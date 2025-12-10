@@ -1,0 +1,439 @@
+#mapId, 
+body {
+    padding: 0;
+    margin: 0;
+    z-index: 2;
+}
+
+html, body, #mapId {
+height: 100%;
+width: 100%;
+margin: 0;
+}
+
+#Titles {
+  position: absolute;
+    z-index: 1000;
+    width: 275px;
+    border-radius: 30px;
+    color: white;
+    font-size: 25px;
+    text-align: center;
+    left: 40%;
+    height: 45px;
+    padding-top: 15px;
+}
+
+
+#searchbar{
+    z-index: 4000;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    margin: 5px;
+    padding-bottom: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    opacity:1;
+    border-radius: 30px;
+    background-color: rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
+}
+
+#LangButtEng {
+  background-color: rgb(212, 212, 212);
+  color: black;
+  border: none;
+  border-radius: 10px;
+  position: relative;
+  left: 5%;
+  margin-top: 5%;
+}
+
+#LangButtMong {
+  background-color: rgb(212, 212, 212);
+  color: black;
+  border: none;
+  border-radius: 10px;
+  position: relative;
+  left: 40%;
+  margin-top: 5%;
+}
+
+#Include {
+  background-color: rgb(212, 212, 212);
+  color: black;
+  border: none;
+  border-radius: 10px;
+  position: relative;
+  left: 0.1%;
+  margin-top: 5%;
+}
+
+#Exclude {
+  background-color: rgb(212, 212, 212);
+  color: black;
+  border: none;
+  border-radius: 10px;
+  position: relative;
+  left: 3%;
+  margin-top: 5%;
+}
+
+.button {
+  box-shadow: 0 3px #999
+}
+
+.button {
+  transition-duration: 0.s;
+}
+
+.button:hover {
+  background-color: black;
+  color: white;
+}
+
+.button:active {
+  box-shadow: 0 2px #000000;
+  transform: translateY(2px);
+}
+
+.Titles {
+    color: white;
+    text-align: center;
+    margin: 10px;
+}
+
+.instruction {
+  font-size:11px;
+  color: white;
+  text-align: center;
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+#slider {
+    z-index: 1000;
+    position: absolute;
+    text-align: center;
+    height: 68%;
+    top: 8%;
+    bottom: 8%;
+    right: 0px;
+    margin: 15px;
+    padding-bottom: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 30px;
+    opacity:1;
+    border-radius: 30px;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    box-sizing: content-box;
+}
+
+#slider .noUi-connect {
+  background: rgb(126, 125, 125);
+}
+
+#slider .noUi-handle {
+  height:32px;
+  width: 32px;
+  border-radius: 50%;
+}
+
+  #About {
+    position: absolute;
+    z-index: 1000;
+    background-color: black;
+    opacity: 1;
+    bottom: 5%;
+    right: 8px;
+    height: 9%;
+    width: 100px;
+    border-radius: 30px;
+    color: white;
+    font-size: small;
+    text-align: center;
+    padding-top: 5px;
+  }
+
+  #aboutmap {
+    background-color: black;
+    color: white;
+    border: black;
+    border-radius: 80px;
+    position: relative;
+    top: 20px;
+  }
+
+  /* Modal Background */
+  .modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: none;
+  }
+
+  /* Modal Content */
+  .modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #0d0d0d;
+    color: #d1d1d1;
+    padding: 20px;
+    border-radius: 30px;
+    z-index: 10000;
+  }
+
+  /* Close Button */
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    cursor: pointer;
+  }
+
+a{
+  color:rgb(87, 0, 19)
+}
+
+a:hover{
+  color: rgb(165, 91, 0)
+}
+
+
+  .link {
+    color:bisque
+  }
+
+  .link:visited{
+    color: burlywood
+  }
+
+  .link:hover {
+    color: rgb(225, 188, 66)
+  }
+
+
+  #legend
+{
+  position: fixed;
+  left: 12.5%;
+  right: 12.5%;
+  z-index: 1000;
+  bottom: -90px;
+  width: 75%;
+  height: 80px;
+  padding: 30px;
+  text-align: center;
+  background-color: rgb(31, 31, 31);
+  box-shadow: 0px 2px 5px rgba(0,0,0,1);
+  opacity: 1;
+  font-size: 25px;
+  color: white;
+  transition: bottom 1s;
+  -webkit-transition: bottom 1s;
+  border-radius: 10% 10% 0% 0%;
+  overflow-y: auto;
+}
+
+#legend:hover {
+  bottom:0px;
+}
+
+#words {
+  position: relative;
+  top: -25px;
+  margin: 0;
+  font-size: 30px;
+  text-align: center;
+}
+
+#table {
+ 
+  overflow-x: auto;
+}
+
+table {
+  table-layout: auto;
+  width: 100%;
+ }
+
+td {
+  word-wrap: break-word;
+  border-bottom: 1px solid white;
+  padding: 0;
+}
+
+tr:hover {
+  background-color:rgb(85, 85, 85) ;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(0, 0, 0); 
+  border-radius: 10px;
+  height: 570px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(173, 173, 173); 
+  border-radius: 10px;
+  height: 570px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #c5c5c5; 
+}
+
+#Bovidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(128, 0, 0);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Camelidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(170, 110, 40);
+  border-radius: 50%;
+  display: inline-block
+}
+
+
+#Canidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(220, 190, 255);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Cervidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(0, 128, 128);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Cricetidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(100, 25, 10);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Dipodidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(0, 0, 0);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Equidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(0, 0, 128);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Erinaceidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(245, 130, 48);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Gliridae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(255, 255, 25);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Leporidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(210, 245, 60);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Muridae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(60, 180, 75);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Mustelidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(240, 50, 230);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Ochotonidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(0, 130, 200);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Sciuridae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(145, 30, 180);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Soricidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(70, 240, 240);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Spalacidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(128, 128, 128);
+  border-radius: 50%;
+  display: inline-block
+}
+
+#Vespertilionidae {
+  height: 10px;
+  width: 10px;
+  background-color:rgb(255, 255, 255);
+  border-radius: 50%;
+  display: inline-block
+}
