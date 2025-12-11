@@ -142,7 +142,7 @@ controlLayers.addBaseLayer(Esri_WorldImagery, "Terrain Basemap");
    });
    
      // Read in the GeoJSON file
-     fetch("https://github.com/KSBiorepository/KSMammalMap/releases/download/v1.0/KansasMammalSpecies.geojson")
+     fetch("KansasMammalSpecies.geojson")
        .then(response => response.json())
        .then(data => {
          // Define the features variable
@@ -508,3 +508,4 @@ document.getElementById('download').addEventListener('click', function () {
       window.location.href = page;
 
     }
+
